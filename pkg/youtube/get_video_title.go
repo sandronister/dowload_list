@@ -3,7 +3,7 @@ package youtube
 import (
 	"os/exec"
 
-	"github.com/sandronister/get_video_golang/pkg/text"
+	"github.com/sandronister/download_list/pkg/text"
 )
 
 func getVideoTitle(url string) string {

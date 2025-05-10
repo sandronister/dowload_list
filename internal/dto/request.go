@@ -1,5 +1,5 @@
 package dto
 
 type Request struct {
-	Url string `json:"urls"`
+	Urls []string `json:"urls"`
 }

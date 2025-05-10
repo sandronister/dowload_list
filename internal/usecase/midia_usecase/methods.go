@@ -7,19 +7,36 @@ import (
 	"github.com/sandronister/download_list/pkg/system_memory_data/types"
 )
 
-func (m *Usecase) PostUrl(request dto.Request) error {
+func (m *Usecase) PostUrl(request dto.Request) []error {
+	var errors []error
 
-	jsonReqquest, err := json.Marshal(request)
+	for _, url := range request.Urls {
+		urlMessage := dto.MessageListen{
+			Url: url,
+		}
 
-	if err != nil {
-		m.logger.Error("Error marshaling request: ", err)
-		return err
+		jsonReqquest, err := json.Marshal(urlMessage)
+
+		if err != nil {
+			m.logger.Error("Error marshaling request: ", err)
+			errors = append(errors, err)
+			continue
+		}
+
+		message := &types.Message{
+			Topic: m.env.BrokerTopic,
+			Value: jsonReqquest,
+		}
+
+		err = m.broker.Publish(message)
+
+		if err != nil {
+			m.logger.Error("Error publishing message: ", err)
+			errors = append(errors, err)
+			continue
+		}
+		m.logger.Info("Message published successfully")
 	}
 
-	message := &types.Message{
-		Topic: m.env.BrokerTopic,
-		Value: jsonReqquest,
-	}
-
-	return m.broker.Publish(message)
+	return errors
 }

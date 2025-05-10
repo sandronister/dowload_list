@@ -1,8 +1,6 @@
 package types
 
-import (
-	"github.com/sandronister/get_video_golang/pkg/text"
-)
+import "github.com/sandronister/download_list/pkg/text"
 
 type Input struct {
 	Url     string

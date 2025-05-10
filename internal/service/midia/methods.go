@@ -33,16 +33,16 @@ func (m *Service) ListenToQueue(message chan<- types.Message) {
 
 func (m *Service) ReadMessage(message <-chan types.Message) {
 	for msg := range message {
-		var requestDTO dto.Request
+		var MessageListen dto.MessageListen
 
-		err := json.Unmarshal(msg.Value, &requestDTO)
+		err := json.Unmarshal(msg.Value, &MessageListen)
 
 		if err != nil {
 			m.logger.Error("Midia service", "Error unmarshalling message: "+err.Error())
 		}
 
 		requestDownload := &midiatype.Input{
-			Url:     requestDTO.Url,
+			Url:     MessageListen.Url,
 			Path:    m.varEnviroment.DownloadPath,
 			Kind:    m.varEnviroment.DownloadKind,
 			Quality: m.varEnviroment.DownloadQuality,

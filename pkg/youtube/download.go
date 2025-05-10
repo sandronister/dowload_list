@@ -3,7 +3,7 @@ package youtube
 import (
 	"fmt"
 
-	"github.com/sandronister/get_video_golang/pkg/youtube/types"
+	"github.com/sandronister/download_list/pkg/youtube/types"
 )
 
 func Download(entity *types.Input) error {

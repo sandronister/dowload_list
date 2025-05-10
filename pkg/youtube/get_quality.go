@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/sandronister/get_video_golang/pkg/youtube/types"
+	"github.com/sandronister/download_list/pkg/youtube/types"
 )
 
 func getQuality(entity *types.Input) error {
