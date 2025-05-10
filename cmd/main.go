@@ -7,12 +7,14 @@ import (
 	"github.com/sandronister/download_list/config"
 	"github.com/sandronister/download_list/internal/di"
 	"github.com/sandronister/download_list/pkg/logger/factory"
+	"github.com/sandronister/download_list/pkg/system_memory_data/types"
 )
 
 func main() {
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
+	message := make(chan types.Message)
 	env, err := config.LoadEnviroment()
 
 	if err != nil {
@@ -34,6 +36,11 @@ func main() {
 		return
 	}
 
+	for range 8 {
+		go midiaService.ReadMessage(message)
+	}
+
+	go midiaService.ListenToQueue(message)
 	go midiaService.WebServer()
 
 	fmt.Println("Server started on port", env.WebPort)

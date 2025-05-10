@@ -5,6 +5,8 @@ import (
 
 	"github.com/sandronister/download_list/internal/dto"
 	"github.com/sandronister/download_list/pkg/system_memory_data/types"
+	youtube "github.com/sandronister/download_list/pkg/youtube"
+	midiatype "github.com/sandronister/download_list/pkg/youtube/types"
 )
 
 func (m *Service) WebServer() error {
@@ -37,6 +39,18 @@ func (m *Service) ReadMessage(message <-chan types.Message) {
 
 		if err != nil {
 			m.logger.Error("Midia service", "Error unmarshalling message: "+err.Error())
+		}
+
+		requestDownload := &midiatype.Input{
+			Url:     requestDTO.Url,
+			Path:    m.varEnviroment.DownloadPath,
+			Kind:    m.varEnviroment.DownloadKind,
+			Quality: m.varEnviroment.DownloadQuality,
+		}
+
+		err = youtube.Download(requestDownload)
+		if err != nil {
+			m.logger.Error("Midia service", "Error downloading video: "+err.Error())
 		}
 	}
 }

@@ -1,0 +1,2 @@
+{"level":"error","ts":"2025-05-10T18:11:20.244-0300","caller":"midia/methods.go:13","msg":"Midia service%!(EXTRA []interface {}=[Error starting server: listen tcp: address 8080: missing port in address])","stacktrace":"github.com/sandronister/download_list/internal/service/midia.(*Service).WebServer\n\t/Users/juliosandroni/Documents/projects/go/youtube/download_list/internal/service/midia/methods.go:13"}
+{"level":"info","ts":"2025-05-10T18:11:20.245-0300","caller":"midia/methods.go:16","msg":"Midia service%!(EXTRA []interface {}=[Server started successfully])"}
