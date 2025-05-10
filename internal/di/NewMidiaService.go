@@ -4,13 +4,12 @@ import (
 	"fmt"
 
 	"github.com/sandronister/download_list/config"
-	"github.com/sandronister/download_list/internal/infra/web"
 	"github.com/sandronister/download_list/internal/service/midia"
-	"github.com/sandronister/download_list/internal/types"
+	"github.com/sandronister/download_list/pkg/logger/types"
 	"github.com/sandronister/download_list/pkg/system_memory_data/factory"
 )
 
-func NewMidiaService(varEnv *config.Enviroment, logger types.ILog) (*midia.Service, error) {
+func NewMidiaService(varEnv *config.Enviroment, logger types.ILogger) (*midia.Service, error) {
 	broker, err := factory.GetBroker(varEnv.BrokerHost, varEnv.BrokerPort)
 
 	if err != nil {
@@ -18,7 +17,12 @@ func NewMidiaService(varEnv *config.Enviroment, logger types.ILog) (*midia.Servi
 		return nil, err
 	}
 
-	server := web.NewServer(varEnv.WebPort)
+	server := NewWebServer(broker, varEnv, logger)
+
+	if server == nil {
+		logger.Error("DI", "Error creating server")
+		return nil, fmt.Errorf("error creating server")
+	}
 
 	return midia.NewMidiaService(
 		server,

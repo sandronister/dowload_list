@@ -34,4 +34,10 @@ func main() {
 		return
 	}
 
+	go midiaService.WebServer()
+
+	fmt.Println("Server started on port", env.WebPort)
+
+	wg.Wait()
+
 }

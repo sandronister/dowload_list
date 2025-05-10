@@ -7,7 +7,7 @@ import (
 	"github.com/sandronister/download_list/pkg/system_memory_data/types"
 )
 
-func (m *Service) Start() error {
+func (m *Service) WebServer() error {
 	err := m.server.Start()
 	if err != nil {
 		m.logger.Error("Midia service", "Error starting server: "+err.Error())
