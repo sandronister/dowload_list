@@ -12,7 +12,9 @@ func (m *Usecase) PostUrl(request dto.Request) []error {
 
 	for _, url := range request.Urls {
 		urlMessage := dto.MessageListen{
-			Url: url,
+			Url:     url,
+			Audio:   request.Audio,
+			Quality: request.Quality,
 		}
 
 		jsonReqquest, err := json.Marshal(urlMessage)

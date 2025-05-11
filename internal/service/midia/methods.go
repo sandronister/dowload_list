@@ -33,19 +33,19 @@ func (m *Service) ListenToQueue(message chan<- types.Message) {
 
 func (m *Service) ReadMessage(message <-chan types.Message) {
 	for msg := range message {
-		var MessageListen dto.MessageListen
+		messageListen := new(dto.MessageListen)
 
-		err := json.Unmarshal(msg.Value, &MessageListen)
+		err := json.Unmarshal(msg.Value, &messageListen)
 
 		if err != nil {
 			m.logger.Error("Midia service", "Error unmarshalling message: "+err.Error())
 		}
 
 		requestDownload := &midiatype.Input{
-			Url:     MessageListen.Url,
+			Url:     messageListen.Url,
 			Path:    m.varEnviroment.DownloadPath,
-			Kind:    m.varEnviroment.DownloadKind,
-			Quality: m.varEnviroment.DownloadQuality,
+			Kind:    messageListen.GetKind(),
+			Quality: messageListen.GetQuality(),
 		}
 
 		err = youtube.Download(requestDownload)
